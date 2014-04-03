@@ -77,6 +77,8 @@ RUN yum install -y /tmp/rpms/logstash-forwarder-0.3.1-1.x86_64.rpm
 ADD etc/logstash-forwarder.crt /etc/
 ADD etc/logstash-forwarder.key /etc/
 ADD etc/lumberjack.conf /etc/
+RUN chmod +x /opt/logstash-forwarder/bin/logstash-forwarder
+ADD etc/supervisord.d/logstash-forwarder.ini /etc/supervisord.d/
 
 # tidy up
 RUN rm -rf /tmp/rpms
