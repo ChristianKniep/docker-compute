@@ -20,10 +20,6 @@ RUN chmod 600 /chome/cluser/.ssh/id_rsa
 RUN chmod 644 /chome/cluser/.ssh/id_rsa.pub
 RUN chown cluser -R /chome/cluser
 
-#ENV http_proxy http://proxy:80
-#ENV https_proxy http://prxy:80
-#ENV ftp_proxy http://proxy:80
-
 ## supervisord
 RUN yum install -y supervisor
 RUN mkdir -p /var/log/supervisor
@@ -71,14 +67,10 @@ RUN yum install -y python-docopt /tmp/rpms/python-carboniface-*
 # Application libs
 RUN yum install -y gsl libgomp
 
-
-# logstash-forwarder
-RUN yum install -y /tmp/rpms/logstash-forwarder-0.3.1-1.x86_64.rpm
-ADD etc/logstash-forwarder.crt /etc/
-ADD etc/logstash-forwarder.key /etc/
-ADD etc/lumberjack.conf /etc/
-RUN chmod +x /opt/logstash-forwarder/bin/logstash-forwarder
-ADD etc/supervisord.d/logstash-forwarder.ini /etc/supervisord.d/
+# rsyslog
+RUN yum install -y syslog-ng
+ADD etc/syslog-ng/syslog-ng.conf /etc/syslog-ng/syslog-ng.conf
+ADD etc/supervisord.d/syslog-ng.ini /etc/supervisord.d/
 
 # tidy up
 RUN rm -rf /tmp/rpms
@@ -86,8 +78,9 @@ RUN rm -rf /tmp/rpms
 # We do not care about the known_hosts-file
 RUN echo "        StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 RUN echo "        UserKnownHostsFile=/dev/null" >> /etc/ssh/ssh_config
+RUN echo "        AddressFamily inet" >> /etc/ssh/ssh_config
 # Solution for 'ping: icmp open socket: Operation not permitted'
 RUN chmod u+s /usr/bin/ping
 RUN ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime 
 
-CMD /bin/supervisord
+CMD /bin/supervisord -c /etc/supervisord.conf
