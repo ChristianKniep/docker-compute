@@ -10,6 +10,10 @@ echo "MY_IP=${MY_IP}"
 echo "### Send IP to etcd"
 echo "# curl -s -XPUT http://${MASTER_IP}:4001/v2/keys/helix/$(hostname)/A -d value=${MY_IP}"
 curl -s -XPUT http://${MASTER_IP}:4001/v2/keys/helix/$(hostname)/A -d value="${MY_IP}"
-
+MY_PTR=$(echo ${MY_IP}|sed -e 's#\.#/#g')
+echo "MY_IP=${MY_IP}"
+echo "### Send IP to etcd"
+echo "# curl -s -XPUT http://${MASTER_IP}:4001/v2/keys/helix/arpa/in-addr/${MY_PTR}/PTR -d value=$(hostname)."
+curl -s -XPUT http://${MASTER_IP}:4001/v2/keys/helix/arpa/in-addr/${MY_PTR}/PTR -d value="$(hostname)."
 
 exit 0
