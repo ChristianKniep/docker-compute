@@ -1,6 +1,6 @@
 ###### compute node
 # runs slurmd, sshd and is able to execute jobs via mpi
-FROM qnib/fd20
+FROM qnib/fd20:bull
 MAINTAINER "Christian Kniep <christian@qnib.org>"
 
 ##### USER
@@ -62,7 +62,10 @@ RUN mkdir -p /var/log/diamond
 ADD etc/supervisord.d/diamond.ini /etc/supervisord.d/diamond.ini
 
 # carboniface
-RUN yum install -y python-docopt /tmp/rpms/python-carboniface-*
+RUN yum install -y python-docopt
+ADD yum-cache/carboniface /tmp/yum-cache/carboniface
+RUN yum install -y /tmp/yum-cache/carboniface/python-carboniface-*
+RUN rm -rf /tmp/yum-cache/carboniface
 
 # Application libs
 RUN yum install -y gsl libgomp
