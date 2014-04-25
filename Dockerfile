@@ -1,6 +1,6 @@
 ###### compute node
 # runs slurmd, sshd and is able to execute jobs via mpi
-FROM qnib/fd20:bull
+FROM qnib/fd20
 MAINTAINER "Christian Kniep <christian@qnib.org>"
 
 ##### USER
@@ -29,9 +29,10 @@ RUN sed -i -e 's/nodaemon=false/nodaemon=true/' /etc/supervisord.conf
 RUN yum install -y openmpi munge
 
 # Put slurm-rpm
-ADD rpms/slurm-2.6.7-1.x86_64.rpm /tmp/
-RUN rpm -i /tmp/slurm-2.6.7-1.x86_64.rpm
+ADD yum-cache/slurm /tmp/yum-cache/slurm
+RUN rpm -i /tmp/yum-cache/slurm/slurm-2.6.7-1.x86_64.rpm
 RUN useradd -u 2001 -d /chome/slurm -m slurm
+RUN rm -rf /tmp/yum-cache/slurm
 
 RUN chown root:root /var/lib/munge/
 RUN chown root:root /var/log/munge/
@@ -52,10 +53,11 @@ ADD root/bin /root/bin
 ADD etc/supervisord.d/setup.ini /etc/supervisord.d/setup.ini
 
 # Diamond
-RUN yum install -y python-configobj
-ADD rpms /tmp/rpms
-RUN yum install -y /tmp/rpms/python-pysensors-*
-RUN yum install -y /tmp/rpms/python-diamond-*
+RUN yum install -y python-configobj lm_sensors
+ADD yum-cache/diamond /tmp/yum-cache/diamond
+RUN yum install -y /tmp/yum-cache/diamond/python-pysensors-*
+RUN yum install -y /tmp/yum-cache/diamond/python-diamond-*
+RUN rm -rf /tmp/yum-cache/diamond
 RUN rm -rf /etc/diamond
 ADD etc/diamond /etc/diamond
 RUN mkdir -p /var/log/diamond
@@ -74,9 +76,6 @@ RUN yum install -y gsl libgomp
 RUN yum install -y syslog-ng
 ADD etc/syslog-ng/syslog-ng.conf /etc/syslog-ng/syslog-ng.conf
 ADD etc/supervisord.d/syslog-ng.ini /etc/supervisord.d/
-
-# tidy up
-RUN rm -rf /tmp/rpms
 
 # We do not care about the known_hosts-file
 RUN echo "        StrictHostKeyChecking no" >> /etc/ssh/ssh_config
