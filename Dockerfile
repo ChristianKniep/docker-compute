@@ -69,4 +69,8 @@ ADD etc/confd/templates/slurm.conf.tmpl /etc/confd/templates/slurm.conf.tmpl
 ADD root/bin/confd_update_slurm.sh /root/bin/confd_update_slurm.sh
 ADD etc/supervisord.d/confd_update_slurm.ini /etc/supervisord.d/confd_update_slurm.ini
 
+ADD usr/local/bin/gemm_block_mpi_50ms /usr/local/bin/
+ADD usr/local/bin/gemm_block_mpi_250ms /usr/local/bin/
+ADD usr/local/bin/gemm_block_mpi_500ms /usr/local/bin/
+ADD usr/local/bin/gemm.sh /usr/local/bin/gemm.sh
 CMD /bin/supervisord -c /etc/supervisord.conf
