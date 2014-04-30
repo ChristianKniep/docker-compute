@@ -28,11 +28,13 @@ if [ ${FILE_TS} -lt ${UPDATE_TS} ];then
 fi
 
 while [ true ];do
-   UPDATE_TS=$(fetch_value /slurm/conf/last_update?wait=true)
+   UPDATE_TS=$(/bin/timeout 1m /root/bin/wait_timeout.sh /slurm/conf/last_update?wait=true)
    sleep 5
    CHECK_UPDATE_TS=$(fetch_value /slurm/conf/last_update)
    if [ ${UPDATE_TS} -eq ${CHECK_UPDATE_TS} ];then
-      echo "FILE_TS:${FILE_TS} < ${UPDATE_TS}:UPDATE_TS"
-      update_slurm
+      if [ ${FILE_TS} -lt ${UPDATE_TS} ];then
+         echo "FILE_TS:${FILE_TS} < ${UPDATE_TS}:UPDATE_TS"
+         update_slurm
+      fi
    fi
 done
