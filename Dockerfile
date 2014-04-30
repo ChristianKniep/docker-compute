@@ -40,6 +40,7 @@ RUN rpm -i /tmp/yum-cache/slurm/slurm-2.6.7-1.x86_64.rpm
 RUN useradd -u 2001 -d /chome/slurm -m slurm
 RUN rm -rf /tmp/yum-cache/slurm
 ADD usr/local/etc/slurm.conf /usr/local/etc/slurm.conf
+ADD root/bin/start_slurmd.sh /root/bin/start_slurmd.sh
 ADD etc/supervisord.d/slurmd.ini /etc/supervisord.d/slurmd.ini
 
 ### SSHD
