@@ -18,6 +18,9 @@ echo "### Send PTR to etcd"
 echo "# curl -s -XPUT http://${MASTER_IP}:4001/v2/keys/helix/arpa/in-addr/${MY_PTR}/PTR -d value=$(hostname)."
 curl -s -XPUT http://${MASTER_IP}:4001/v2/keys/helix/arpa/in-addr/${MY_PTR}/PTR -d value="$(hostname)."
 
+## Set new date to trigger update of NodeRange
+curl -s -XPUT http://${MASTER_IP}:4001/v2/keys/confd/watch/compute/last_update $(date +%s)
+
 
 
 exit 0
