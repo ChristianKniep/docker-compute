@@ -60,4 +60,13 @@ RUN echo "        StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 RUN echo "        UserKnownHostsFile=/dev/null" >> /etc/ssh/ssh_config
 RUN echo "        AddressFamily inet" >> /etc/ssh/ssh_config
 
+## confd
+# bc needed within /root/bin/confd_update_slurm.sh
+RUN yum install -y bc bind-utils
+ADD usr/local/bin/confd /usr/local/bin/confd
+ADD etc/confd/conf.d/slurm.conf.toml /etc/confd/conf.d/slurm.conf.toml
+ADD etc/confd/templates/slurm.conf.tmpl /etc/confd/templates/slurm.conf.tmpl
+ADD root/bin/confd_update_slurm.sh /root/bin/confd_update_slurm.sh
+ADD etc/supervisord.d/confd_update_slurm.ini /etc/supervisord.d/confd_update_slurm.ini
+
 CMD /bin/supervisord -c /etc/supervisord.conf

@@ -1,0 +1,10 @@
+[template]
+src = "slurm.conf.tmpl"
+dest = "/usr/local/etc/slurm.conf"
+keys = [
+  "/slurm/conf/nodename",
+  "/slurm/conf/prolog/slurmctld",
+  "/slurm/conf/epilog/slurmctld",
+  "/slurm/conf/fast/schedule",
+  "/slurm/conf/control/machine",
+]
