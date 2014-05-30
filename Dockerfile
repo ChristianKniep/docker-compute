@@ -50,8 +50,10 @@ RUN sshd-keygen
 RUN sed -i -e 's/#UseDNS yes/UseDNS no/' /etc/ssh/sshd_config
 ADD root/ssh /root/.ssh/
 ADD etc/supervisord.d/sshd.ini /etc/supervisord.d/sshd.ini
-ADD root/bin /root/bin
-ADD etc/supervisord.d/setup.ini /etc/supervisord.d/setup.ini
+ADD root/bin/start_slurmd.sh /root/bin/start_slurmd.sh
+ADD root/bin/confd_update_slurm.sh /root/bin/confd_update_slurm.sh
+ADD root/bin/wait_timeout.sh /root/bin/wait_timeout.sh
+
 
 # Application libs
 RUN yum install -y gsl libgomp
