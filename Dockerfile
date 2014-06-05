@@ -50,9 +50,6 @@ RUN sshd-keygen
 RUN sed -i -e 's/#UseDNS yes/UseDNS no/' /etc/ssh/sshd_config
 ADD root/ssh /root/.ssh/
 ADD etc/supervisord.d/sshd.ini /etc/supervisord.d/sshd.ini
-ADD root/bin/start_slurmd.sh /root/bin/start_slurmd.sh
-ADD root/bin/confd_update_slurm.sh /root/bin/confd_update_slurm.sh
-ADD root/bin/wait_timeout.sh /root/bin/wait_timeout.sh
 
 
 # Application libs
@@ -70,6 +67,7 @@ ADD usr/local/bin/confd /usr/local/bin/confd
 ADD etc/confd/conf.d/slurm.conf.toml /etc/confd/conf.d/slurm.conf.toml
 ADD etc/confd/templates/slurm.conf.tmpl /etc/confd/templates/slurm.conf.tmpl
 ADD root/bin/confd_update_slurm.sh /root/bin/confd_update_slurm.sh
+ADD root/bin/wait_timeout.sh /root/bin/wait_timeout.sh
 ADD etc/supervisord.d/confd_update_slurm.ini /etc/supervisord.d/confd_update_slurm.ini
 
 ADD usr/local/bin/gemm_block_mpi_50ms /usr/local/bin/

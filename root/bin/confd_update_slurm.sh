@@ -1,10 +1,13 @@
 #!/bin/bash
 
+# sleep 5 seconds to give it time
+sleep 5
+
 DAEMON=$(/bin/supervisorctl status|grep ^slurm|awk '{print $1}')
 
 function fetch_value {
    KEY=$(echo "/${1}"|sed -e 's#//#/#g')
-   VALUE=$(curl -s -4 -L http://etcd:4001/v2/keys${KEY}| python -mjson.tool|grep value|head -n1)
+   VALUE=$(curl -s -4 --connect-timeout 5 -L http://etcd:4001/v2/keys${KEY}| python -mjson.tool|grep value|head -n1)
    RESULT=$(echo ${VALUE}|awk -F\: '{print $2}'|sed -s 's/"//g'|sed -e 's/ //g')
    if [ "X${RESULT}" == "X" ];then
       return 1
@@ -24,6 +27,9 @@ function update_slurm {
 
 FILE_TS=$(date --utc --reference=/usr/local/etc/slurm.conf +%s)
 UPDATE_TS=$(fetch_value /slurm/conf/last_update)
+if [ "X${UPDATE_TS}" == "X" ];then
+   UPDATE_TS=${FILE_TS}
+fi
 if [ ${FILE_TS} -lt ${UPDATE_TS} ];then
    update_slurm
 fi
