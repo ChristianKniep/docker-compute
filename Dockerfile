@@ -1,6 +1,6 @@
 ###### compute node
 # runs slurmd, sshd and is able to execute jobs via mpi
-FROM qnib-terminal
+FROM qnib/terminal
 MAINTAINER "Christian Kniep <christian@qnib.org>"
 
 ##### USER
