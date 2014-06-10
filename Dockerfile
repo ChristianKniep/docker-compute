@@ -18,5 +18,6 @@ ADD usr/local/bin/gemm_block_mpi_250ms /usr/local/bin/
 ADD usr/local/bin/gemm_block_mpi_500ms /usr/local/bin/
 ADD usr/local/bin/gemm.sh /usr/local/bin/gemm.sh
 ADD etc/supervisord.d/confd_update_slurm.ini /etc/supervisord.d/confd_update_slurm.ini
+RUN touch /usr/local/etc/slurm.conf
 
 CMD /bin/supervisord -c /etc/supervisord.conf
