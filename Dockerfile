@@ -13,11 +13,10 @@ ADD etc/supervisord.d/slurmd.ini /etc/supervisord.d/slurmd.ini
 # Application libs
 RUN yum install -y gsl libgomp
 
-ADD usr/local/bin/gemm_block_mpi_50ms /usr/local/bin/
-ADD usr/local/bin/gemm_block_mpi_250ms /usr/local/bin/
-ADD usr/local/bin/gemm_block_mpi_500ms /usr/local/bin/
-ADD usr/local/bin/gemm.sh /usr/local/bin/gemm.sh
 ADD etc/supervisord.d/confd_update_slurm.ini /etc/supervisord.d/confd_update_slurm.ini
 RUN touch /usr/local/etc/slurm.conf
+
+RUN echo "source /etc/profile" >> /etc/bashrc
+RUN echo "module load mpi" >> /etc/bashrc
 
 CMD /bin/supervisord -c /etc/supervisord.conf
