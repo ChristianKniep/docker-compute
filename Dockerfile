@@ -14,7 +14,6 @@ ADD etc/supervisord.d/slurmd.ini /etc/supervisord.d/slurmd.ini
 RUN yum install -y gsl libgomp
 
 ADD etc/supervisord.d/confd_update_slurm.ini /etc/supervisord.d/confd_update_slurm.ini
-RUN touch /usr/local/etc/slurm.conf
 
 RUN echo "source /etc/profile" >> /etc/bashrc
 RUN echo "module load mpi" >> /etc/bashrc
