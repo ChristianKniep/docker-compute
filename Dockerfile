@@ -18,4 +18,7 @@ ADD etc/supervisord.d/confd_update_slurm.ini /etc/supervisord.d/confd_update_slu
 RUN echo "source /etc/profile" >> /etc/bashrc
 RUN echo "module load mpi" >> /etc/bashrc
 
+# Stress
+RUN yum install -y stress
+
 CMD /bin/supervisord -c /etc/supervisord.conf
