@@ -53,7 +53,7 @@ After some time sinfo should show all nodes. The names are random, because I use
 is not able to use different hostnames (as to my knowledge).
 
 ```
-$ sinfo
+# sinfo
 PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
 qnib*        up   infinite      2   idle 1df2666e8a45,f8d22e88943a
 ```
@@ -62,17 +62,17 @@ qnib*        up   infinite      2   idle 1df2666e8a45,f8d22e88943a
 
 Now we compile the little mpi program `hello_mpi.c`.
 ```
-$ mpicc -o /chome/cluser/hello_mpi /opt/qnib/src/hello_mpi.c
-$ mpirun -n 1 /chome/cluser/hello_mpi
+# mpicc -o /chome/cluser/hello_mpi /opt/qnib/src/hello_mpi.c
+# mpirun -n 1 /chome/cluser/hello_mpi
 Process 0 on 1df2666e8a45 out of 1
 ```
 
 To run it in parallel SLURM comes to the rescue and provides all the environment needed, we just have to run it.
 
 ```
-$ salloc -N2 bash
+# salloc -N2 bash
 salloc: Granted job allocation 2
-$ mpirun /chome/cluser/hello_mpi
+# mpirun /chome/cluser/hello_mpi
 Process 7 on cdf11fef8b1e out of 8
 Process 4 on cdf11fef8b1e out of 8
 Process 6 on cdf11fef8b1e out of 8
