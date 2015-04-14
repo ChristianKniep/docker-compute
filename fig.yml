@@ -1,0 +1,40 @@
+consul:
+    image: qnib/consul
+    ports:
+     - "8500:8500"
+    environment:
+    - DC_NAME=dc1
+    - ENABLE_SYSLOG=true
+    dns: 127.0.0.1
+    hostname: consul
+    privileged: true
+
+slurmctld:
+    image: qnib/slurmctld
+    ports:
+    - "6817:6817"
+    links:
+    - consul:consul
+    environment:
+    - DC_NAME=dc1
+    - SERVICE_6817_NAME=slurmctld
+    - ENABLE_SYSLOG=true
+    volumes:
+    - /Users/kniepbert/Daten/QNIBInc/docker/docker-slurm/opt/qnib/bin/:/newbin/
+    dns: 127.0.0.1
+    hostname: slurmctld
+    privileged: true
+
+compute:
+    image: qnib/compute
+    links:
+    - consul:consul
+    - slurmctld:slurmctld
+    environment:
+    - DC_NAME=dc1
+    - ENABLE_SYSLOG=true
+    volumes:
+    - ${HOME}/shared/chome/:/chome/
+    dns: 127.0.0.1
+    #hostname: slurmd
+    privileged: true
