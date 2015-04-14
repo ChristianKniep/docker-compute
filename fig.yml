@@ -34,7 +34,7 @@ compute:
     - DC_NAME=dc1
     - ENABLE_SYSLOG=true
     volumes:
-    - ${HOME}/shared/chome/:/chome/
+    - /chome/:/chome/
     dns: 127.0.0.1
     #hostname: slurmd
     privileged: true
