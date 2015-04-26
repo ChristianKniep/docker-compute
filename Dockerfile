@@ -14,3 +14,9 @@ RUN echo "module load mpi" >> /etc/bashrc
 
 # ADD source code
 ADD opt/qnib/src/hello_mpi.c /opt/qnib/src/
+
+ADD opt/qnib/jobscripts/ /opt/qnib/jobscripts/
+ADD opt/qnib/bin/gemm_block_mpi_50ms /opt/qnib/bin/
+ADD opt/qnib/bin/gemm_block_mpi_250ms /opt/qnib/bin/
+ADD opt/qnib/bin/gemm_block_mpi_500ms /opt/qnib/bin/
+ADD opt/qnib/bin/generate_work.sh /opt/qnib/bin/generate_work.sh
