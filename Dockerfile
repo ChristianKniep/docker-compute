@@ -24,3 +24,4 @@ ADD opt/qnib/bin/gemm_block_mpi_500ms /opt/qnib/bin/
 ADD opt/qnib/bin/generate_work.sh /opt/qnib/bin/generate_work.sh
 
 RUN pip install clustershell
+ADD root/bash_history /root/.bash_history
