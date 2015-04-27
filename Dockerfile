@@ -5,6 +5,8 @@ MAINTAINER "Christian Kniep <christian@qnib.org>"
 RUN echo "2015-04-14.1";yum clean all;yum install -y openmpi-devel
 # Application libs
 RUN yum install -y gsl libgomp
+# bc
+RUN yum install -y bc
 
 RUN echo "source /etc/profile" >> /etc/bashrc
 RUN echo "module load mpi" >> /etc/bashrc
