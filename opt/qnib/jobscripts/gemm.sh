@@ -1,4 +1,9 @@
 #!/bin/bash
+#SBATCH --job-name=GeMM
+#SBATCH --workdir=/scratch/
+#SBATCH --output=slurm-%j.out
+#SBATCH --error=slurm-%j.err
+
 KVAL=${1-16384}
 SLEEP=${2-250}
 JOBID=${SLURM_JOBID}
