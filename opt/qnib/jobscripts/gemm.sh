@@ -10,13 +10,14 @@ JOBID=${SLURM_JOBID}
 NLIST=${SLURM_NODELIST}
 START_TIME=$(date +%s)
 CMD="/opt/qnib/bin/gemm_block_mpi_${SLEEP}ms -K ${KVAL}"
-logger -t slurm_out  "Job ${JOBID} starts. K:${KVAL}"
+logger -t slurm_${JOBID}  "Job ${JOBID} starts. K:${KVAL}"
 echo "####################################################"
 echo "################ JOBRUN ############################"
 echo "####################################################"
+logger -t slurm_${JOBID}  "mpirun -q ${CMD}"
 mpirun -q ${CMD}
 echo "####################################################"
 echo "################ \JOBRUN ############################"
 echo "####################################################"
 WTIME=$(echo "$(date +%s) - ${START_TIME}"|bc)
-logger -t slurm_out "Job ${JOBID} ends K:${KVAL}; wall:${WTIME}"
+logger -t slurm_${JOBID} "Job ${JOBID} ends K:${KVAL}; wall:${WTIME}"
