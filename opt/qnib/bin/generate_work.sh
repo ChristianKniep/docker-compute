@@ -1,4 +1,8 @@
 #!/bin/bash
+gem_delays=(50 250 500)
+gem_ks=(32768 65536)
+nodelist=($(scontrol show partition=all|grep " Nodes"|awk -F\= '{print $2}'|sed -e 's/,/ /g'))
+err_node=${nodelist[$[ $RANDOM % ${#nodelist[@]} ]]}
 users=(alice bob carol dave eve john jane)
 nodes=$(scontrol show partition|egrep -o "TotalNodes=[0-9]+"|head -n1|egrep -o "[0-9]+")
 sjobs=(ping_pong gemm)
@@ -11,12 +15,14 @@ for x in $(seq 1 ${1-5});do
         job=${2}
     fi
     if [ ${job} == "gemm" ];then
+        gem_k=${gem_ks[$[ $RANDOM % ${#gem_ks[@]} ]]}
+        gem_delay=${gem_delays[$[ $RANDOM % ${#gem_delays[@]} ]]}
         exp=$(shuf -i 1-$(echo "sqrt(${nodes})"|bc) -n 1)
         num=$(echo "2^${exp}"|bc)
-        echo ">> su -c 'sbatch -N${num} /opt/qnib/jobscripts/gemm.sh' ${user}"
-        su -c "sbatch -N${num} /opt/qnib/jobscripts/gemm.sh" ${user}
+        echo ">> su -l -c 'sbatch -N${num} /opt/qnib/jobscripts/gemm.sh ${gem_delay} ${gem_k} ${err_node}' ${user}"
+        #su -l -c "sbatch -N${num} /opt/qnib/jobscripts/gemm.sh" ${user}
     else
-        echo ">> su -c 'sbatch -N${num} /opt/qnib/jobscripts/ping_pong.sh' ${user}"
-        su -c "sbatch -N${num} /opt/qnib/jobscripts/ping_pong.sh" ${user}
+        echo ">> su -l -c 'sbatch -N${num} /opt/qnib/jobscripts/ping_pong.sh ${err_node}' ${user}"
+        #su -l -c "sbatch -N${num} /opt/qnib/jobscripts/ping_pong.sh" ${user}
     fi
 done
