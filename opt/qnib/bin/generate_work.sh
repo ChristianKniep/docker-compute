@@ -17,7 +17,7 @@ for x in $(seq 1 ${1-5});do
         num=$(echo "2^${exp}"|bc)
         echo "num: ${num}"
         echo ">> su -c 'sbatch -N${num} /opt/qnib/jobscripts/gemm.sh' ${user}"
-        #su -c "sbatch -N${num} /opt/qnib/jobscripts/gemm.sh" ${user}
+        su -c "sbatch -N${num} /opt/qnib/jobscripts/gemm.sh" ${user}
     else
         echo ">> su -c 'sbatch -N${num} /opt/qnib/jobscripts/ping_pong.sh' ${user}"
         su -c "sbatch -N${num} /opt/qnib/jobscripts/ping_pong.sh" ${user}
