@@ -8,7 +8,7 @@ users=(alice bob carol dave eve john jane)
 nodes=$(scontrol show partition|egrep -o "TotalNodes=[0-9]+"|head -n1|egrep -o "[0-9]+")
 sjobs=(ping_pong gemm)
 for x in $(seq 1 ${1-5});do
-    num=$(shuf -i 2-${nodes} -n 1)
+    num=$(shuf -i 2-${3-${nodes}} -n 1)
     user=${users[$[ $RANDOM % ${#users[@]} ]]}
     if [ "X${2}" == "X" ];then
         job=${sjobs[$[ $RANDOM % ${#sjobs[@]} ]]}
