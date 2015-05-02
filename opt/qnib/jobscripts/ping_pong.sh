@@ -5,6 +5,8 @@
 #SBATCH --error=slurm-%j.err
 #SBATCH --ntasks-per-node=1
 
+set -x
+
 ERR_NODE=${1-noerrornode}
 if [ ${ERR_NODE} != "noerrornode" ];then
     logger --tag slurm_${SLURM_JOBID} "Error Node: ${ERR_NODE}"
@@ -16,13 +18,15 @@ DOMAIN=node.consul
 BW_LIMIT=3000
 NODES=$(python -c "from ClusterShell.NodeSet import NodeSet;print ' '.join(NodeSet('${SLURM_NODELIST}'))")
 if [ $(echo ${NODES}|grep -c ${ERR_NODE}) -ne 0 ];then
-    # let job fail after 15sec
-    sleep 15
-    logger -t slurm_${JOBID}  "Job failed (tell you a secret: due to error node trigger)"
+    # let job fail after 5sec
+    sleep 5
+    logger -t slurm_${SLURM_JOBID}  "Job failed (tell you a secret: due to error node trigger)"
     exit 42
 fi
 if [ ${SLURMD_NODENAME} == ${ERR_NODE} ];then
-    logger -t slurm_${JOBID}  "Job failed (tell you a secret: due to error node trigger)"
+    # let job fail after 5sec
+    sleep 5
+    logger -t slurm_${SLURM_JOBID}  "Job failed (tell you a secret: due to error node trigger)"
     exit 42
 fi
 for node in ${NODES};do
