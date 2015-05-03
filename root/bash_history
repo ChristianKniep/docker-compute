@@ -1,2 +1,3 @@
 su -l -c 'sbatch -N2 /opt/qnib/jobscripts/gemm.sh 16384 500' alice
 su -l -c 'sbatch -N4 /opt/qnib/jobscripts/ping_pong.sh' bob
+/opt/qnib/bin/generate_work.sh 10 3 compute5
