@@ -3,17 +3,17 @@ gem_delays=(50 250 500)
 gem_ks=(32768 65536)
 nodelist=($(scontrol show partition=all|grep " Nodes"|awk -F\= '{print $2}'|sed -e 's/,/ /g'))
 rand_node=${nodelist[$[ $RANDOM % ${#nodelist[@]} ]]}
-err_node=${2-${rand_node}}
+err_node=${3-${rand_node}}
 users=(alice bob carol dave eve john jane)
 nodes=$(scontrol show partition|egrep -o "TotalNodes=[0-9]+"|head -n1|egrep -o "[0-9]+")
 sjobs=(ping_pong gemm)
 for x in $(seq 1 ${1-5});do
-    num=$(shuf -i 2-${3-${nodes}} -n 1)
+    num=$(shuf -i 2-${2-${nodes}} -n 1)
     user=${users[$[ $RANDOM % ${#users[@]} ]]}
-    if [ "X${2}" == "X" ];then
+    if [ "X${4}" == "X" ];then
         job=${sjobs[$[ $RANDOM % ${#sjobs[@]} ]]}
     else
-        job=${2}
+        job=${4}
     fi
     if [ ${job} == "gemm" ];then
         gem_k=${gem_ks[$[ $RANDOM % ${#gem_ks[@]} ]]}
