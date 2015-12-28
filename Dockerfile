@@ -2,7 +2,7 @@ FROM qnib/slurmd
 MAINTAINER "Christian Kniep <christian@qnib.org>"
 
 # Install dependencies
-RUN echo "2015-04-14.1";yum clean all;yum install -y openmpi-devel
+RUN yum install -y openmpi-devel libmlx4
 # Application libs
 RUN yum install -y gsl libgomp
 # bc
