@@ -1,0 +1,9 @@
+{
+  "checks": {
+    "ibstate": {
+      "command": "/opt/qnib/bin/check_ib.py --exp-cnt=1 --exp-state=active",
+      "standalone": true,
+      "interval": 10
+    }
+  }
+}

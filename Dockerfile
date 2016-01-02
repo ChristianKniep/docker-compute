@@ -2,7 +2,7 @@ FROM qnib/slurmd
 MAINTAINER "Christian Kniep <christian@qnib.org>"
 
 # Install dependencies
-RUN yum install -y openmpi-devel libmlx4 qperf
+RUN yum install -y openmpi-devel libmlx4 qperf infiniband-diags
 # Application libs
 RUN yum install -y gsl libgomp
 # bc
@@ -24,4 +24,9 @@ ADD opt/qnib/bin/gemm_block_mpi_500ms /opt/qnib/bin/
 ADD opt/qnib/bin/generate_work.sh /opt/qnib/bin/generate_work.sh
 
 RUN pip install clustershell
-ADD root/bash_history /root/.bash_history
+RUN echo "su -l -c 'sbatch -N2 /opt/qnib/jobscripts/gemm.sh 16384 500' alice" >> /root/.bash_history && \
+    echo "su -l -c 'sbatch -N4 /opt/qnib/jobscripts/ping_pong.sh' bob" >> /root/.bash_history && \
+    echo "/opt/qnib/bin/generate_work.sh 10 3 compute5" >> /root/.bash_history
+ADD etc/sensu/conf.d/check_ib.json /etc/sensu/conf.d/
+ADD opt/qnib/sensu/bin/check_ib.py /opt/qnib/sensu/bin/check_ib.py
+ENV SENSU_CHECK_IB=false
