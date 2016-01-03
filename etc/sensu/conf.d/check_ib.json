@@ -1,7 +1,7 @@
 {
   "checks": {
     "ibstate": {
-      "command": "/opt/qnib/bin/sensu/check_ib.py --exp-cnt=1 --exp-state=active",
+      "command": "/opt/qnib/sensu/bin/check_ib.py --exp-cnt=1 --exp-state=active",
       "standalone": true,
       "interval": 10
     }
