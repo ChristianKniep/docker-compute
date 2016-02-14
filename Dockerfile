@@ -1,12 +1,11 @@
 FROM qnib/slurmd
-MAINTAINER "Christian Kniep <christian@qnib.org>"
 
 # Install dependencies
-RUN yum install -y openmpi-devel libmlx4 qperf infiniband-diags
+RUN dnf install -y openmpi-devel libmlx4 qperf infiniband-diags
 # Application libs
-RUN yum install -y gsl libgomp
+RUN dnf install -y gsl libgomp
 # bc
-RUN yum install -y bc
+RUN dnf install -y bc
 
 RUN echo "source /etc/profile" >> /etc/bashrc
 RUN echo "module load mpi" >> /etc/bashrc
