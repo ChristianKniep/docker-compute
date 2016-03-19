@@ -18,9 +18,24 @@ slurmctld:
     environment:
      - DC_NAME=dc1
     volumes:
-     - /chome/
+     - /scratch/
     dns: 127.0.0.1
     hostname: slurmctld
+    privileged: true
+
+devel:
+    image: qnib/compute
+    hostname: devel
+    links:
+     - consul:consul
+    environment:
+     - DC_NAME=dc1
+     - SUPERVISOR_SKIP_SRV=slurm_update,slurmd
+    volumes_from:
+     - slurmctld
+    volumes:
+     - ./opt/qnib/src/:/opt/qnib/src/
+    dns: 127.0.0.1
     privileged: true
 
 compute:

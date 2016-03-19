@@ -68,9 +68,8 @@ even         up   infinite      2   idle 5fe0838dcbf4,8ecf49402404
 
 Now we compile the little mpi program `hello_mpi.c`.
 ```
-# mkdir -p /chome/cluser/
-# mpicc -o /chome/cluser/hello_mpi /opt/qnib/src/hello_mpi.c
-# mpirun -n 1 /chome/cluser/hello_mpi
+# mpicc -o /scratch/hello_mpi /opt/qnib/src/hello_mpi.c
+# mpirun -n 1 /scratch/hello_mpi
 Process 0 on 1df2666e8a45 out of 1
 ```
 
@@ -79,7 +78,7 @@ To run it in parallel SLURM comes to the rescue and provides all the environment
 ```
 # salloc -N2 bash
 salloc: Granted job allocation 2
-# mpirun /chome/cluser/hello_mpi
+# mpirun /scratch/hello_mpi
 Process 7 on cdf11fef8b1e out of 8
 Process 4 on cdf11fef8b1e out of 8
 Process 6 on cdf11fef8b1e out of 8
@@ -94,7 +93,7 @@ Or even easier....
 
 ```
 #
-srun -N5 mpirun /chome/cluser/hello_mpi
+srun -N5 mpirun /scratch/hello_mpi
 Process 0 on 8ecf49402404 out of 5
 Process 4 on 954c9649bacc out of 5
 Process 2 on 4e29f3aa87c5 out of 5
