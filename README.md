@@ -34,12 +34,16 @@ compute:
 Let's fire it up and scale the nodes to 2.
 
 ```
-$ fig up -d
-Creating dockercompute_consul_1...
-Creating dockercompute_slurmctld_1...
-Creating dockercompute_compute_1...
-$ fig scale compute=2
-Starting dockercompute_compute_2...
+➜  docker-compute git:(master) docker-compose up -d                                                                                                                                                                                                                                                                                      git:(master|)
+Creating dockercompute_consul_1
+Creating dockercompute_slurmctld_1
+Creating dockercompute_compute_1
+➜  docker-compute git:(master) docker-compose scale compute=5                                                                                                                                                                                                                                                                            git:(master|)
+Creating and starting 2 ... done
+Creating and starting 3 ... done
+Creating and starting 4 ... done
+Creating and starting 5 ... done
+➜  docker-compute git:(master)
 ```
 
 Now we connect to the first node.
@@ -55,13 +59,16 @@ is not able to use different hostnames (as to my knowledge).
 ```
 # sinfo
 PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
-qnib*        up   infinite      2   idle 1df2666e8a45,f8d22e88943a
+all*         up   infinite      5   idle 0de19bd8d851,4e29f3aa87c5,5fe0838dcbf4,8ecf49402404,954c9649bacc
+odd          up   infinite      3   idle 0de19bd8d851,4e29f3aa87c5,954c9649bacc
+even         up   infinite      2   idle 5fe0838dcbf4,8ecf49402404
 ```
 
 ### mpi the thing
 
 Now we compile the little mpi program `hello_mpi.c`.
 ```
+# mkdir -p /chome/cluser/
 # mpicc -o /chome/cluser/hello_mpi /opt/qnib/src/hello_mpi.c
 # mpirun -n 1 /chome/cluser/hello_mpi
 Process 0 on 1df2666e8a45 out of 1
@@ -81,4 +88,37 @@ Process 3 on 647c9ef10a16 out of 8
 Process 2 on 647c9ef10a16 out of 8
 Process 0 on 647c9ef10a16 out of 8
 Process 1 on 647c9ef10a16 out of 8
+```
+
+Or even easier....
+
+```
+#
+srun -N5 mpirun /chome/cluser/hello_mpi
+Process 0 on 8ecf49402404 out of 5
+Process 4 on 954c9649bacc out of 5
+Process 2 on 4e29f3aa87c5 out of 5
+Process 1 on 0de19bd8d851 out of 5
+Process 3 on 5fe0838dcbf4 out of 5
+Process 4 on 954c9649bacc out of 5
+Process 1 on 0de19bd8d851 out of 5
+Process 2 on 4e29f3aa87c5 out of 5
+Process 3 on 8ecf49402404 out of 5
+Process 0 on 5fe0838dcbf4 out of 5
+Process 3 on 8ecf49402404 out of 5
+Process 1 on 4e29f3aa87c5 out of 5
+Process 0 on 0de19bd8d851 out of 5
+Process 2 on 5fe0838dcbf4 out of 5
+Process 4 on 954c9649bacc out of 5
+Process 0 on 954c9649bacc out of 5
+Process 4 on 8ecf49402404 out of 5
+Process 2 on 4e29f3aa87c5 out of 5
+Process 3 on 5fe0838dcbf4 out of 5
+Process 1 on 0de19bd8d851 out of 5
+Process 0 on 4e29f3aa87c5 out of 5
+Process 2 on 5fe0838dcbf4 out of 5
+Process 1 on 0de19bd8d851 out of 5
+Process 3 on 8ecf49402404 out of 5
+Process 4 on 954c9649bacc out of 5
+#
 ```
